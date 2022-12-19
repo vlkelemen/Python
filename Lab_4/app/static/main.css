@@ -1,0 +1,64 @@
+.Welcome {
+    display: flex;
+    justify-content: center;
+}
+
+.Welcome .wt {
+    background-color: #857979;
+    margin-top: 30px;
+    padding: 30px;
+    border-radius: 12px;
+    color: white;
+}
+
+.mainbox {
+    display: flex;
+    flex-direction: row;
+    padding: 100px;
+    justify-content: space-between;
+}
+
+.imgBox {
+    border: 3px solid #857979;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+    width: 850px;
+    flex-direction: column;
+}
+
+.imgBox img {
+    width: 50%;
+    height: 50%;
+}
+
+.imgBox p {
+    font-size: 4em;
+}
+
+.codeBlock {
+    background-color: #e0e3d3;
+    border-radius: 12px;
+    padding: 12px;
+    width: 500px;
+    margin-left: 50px;
+}
+
+footer {
+    bottom: 0;
+}
+
+.form-contact {
+    display: flex;
+    justify-content: center;
+}
+
+/*
+.form-group {
+    width: 500px;
+    background-color: #e0e3d3;
+    padding: 50px;
+    margin: 20px;
+    border-radius: 25px;
+}*/
