@@ -25,11 +25,11 @@ def contact():
         logger.debug(f"Message = {form.message.data}")
         session['name'] = form.name.data
         session['email'] = form.email.data
-        flash(f"Дані успішно відправлено: {form.name.data}, {form.email.data}", category='success')
+        flash(f"Дані надіслано успішно: {form.name.data}, {form.email.data}", category='success')
         return redirect(url_for("contact"))
 
     elif request.method == 'POST':
-        flash("Не пройшла валідація з Post", category='warning')
+        flash("Валідація з Post не пройшла", category='warning')
 
     form.name.data = session.get("name")
     form.email.data = session.get("email")
