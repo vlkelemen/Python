@@ -1,0 +1,31 @@
+
+<div class="container">
+
+    <footer class="row row-cols-md-5 py-3">
+
+        <div style="text-align:center; margin-left: 20%">
+            <h4>OS</h4>
+            <ul class="nav flex-column">
+                {% for os in os_information %}
+                <li class="nav-item mb-2"><a class="nav-link text-muted">{{os}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div style="text-align:center">
+            <h4>User Agent</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a class="nav-link p-0 text-muted">{{user_info}}</a></li>
+            </ul>
+        </div>
+
+        <div style="text-align:center">
+            <h4>Time</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a class="nav-link p-0 text-muted">{{date}}</a></li>
+            </ul>
+        </div>
+
+    </footer>
+
+</div>
