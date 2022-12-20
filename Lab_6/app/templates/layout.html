@@ -1,0 +1,31 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+
+    <!-- link bootstrap 5 css -->
+    <link href="{{url_for('static', filename = 'css/bootstrap.min.css')}}" rel="stylesheet">
+</head>
+
+<body>
+    {% include "nav.html" %}
+
+    {% for cat, msg in get_flashed_messages(True) %}
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-{{cat}} mx-auto" style="width: 250px; margin-bottom: 10px;">{{msg}}</li>
+    </ul>
+    {%endfor %}
+
+    {% block name %}
+    {% endblock %}
+
+
+    {% block body %}
+    {% endblock %}
+
+    <!-- link bootstrap 5 js -->
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+
+    <!-- {% include "footer.html" %} -->
+</body>
+</html>
