@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<!--
+{% for cat, msg in get_flashed_messages(True) %}
+<ul class="list-group">
+    <li class="list-group-item list-group-item-{{cat}} mx-auto" style="width: 250px; margin-bottom: 10px;">{{msg}}</li>
+</ul>
+{%endfor %}
+-->
+{% from "_render_field.html" import render_field %}
+
+  <div class="col-6 mx-auto">
+
+    <br><br><center><div class="card w-75 text-center">
+
+      <div class="card-header bg-dark">
+        <h5 class="text-center" style="color:white">WTF-Form</h5>
+      </div>
+
+      <div class="card-body bg-success">
+        <form class="text-lite" method="post">
+          {{ form.csrf_token }}
+          {{ render_field(form.name, class="text-center form-control") }}
+          {{ render_field(form.email, class="text-center form-control") }}
+          {{ render_field(form.phone, class="text-center form-control") }}
+          {{ render_field(form.library, class="text-center form-control") }}
+          {{ render_field(form.message, class="text-center form-control") }}
+          {{ form.submit(class="btn btn-dark w-100") }}
+        </form>
+      </div>
+
+    </div>
+  </center>
+  </div>
+
+{% endblock %}
