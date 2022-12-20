@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block title %} Database {% endblock %}
+
+{% block name %}
+<br><h1 class="text-center">Messages</h1><br>
+{% endblock %}
+
+{% block body %}
+<table class="table table-hover table-bordered table-striped">
+    <thead class="text-center table-primary">
+      <tr>
+       <th scope="col">Id</th>
+       <th scope="col">Name</th>
+       <th scope="col">Email</th>
+       <th scope="col">Phone</th>
+       <th scope="col">Library</th>
+       <th scope="col">Message</th>
+       <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    {% for data in messages %}
+    <tbody>
+      <tr class="text-center align-middle">
+       <td>{{data.id}}</td>
+       <td>{{data.name}}</td>
+       <td>{{data.email}}</td>
+       <td>{{data.phone}}</td>
+       <td>{{data.library}}</td>
+       <td>{{data.message}}</td>
+       <td><a href="{{ url_for('delete_message', id=data.id) }}" type="button" class="btn btn-danger">Delete</a></td>
+       </tr>
+    </tbody>
+    {% endfor%}
+ </table>
+{% endblock %}
