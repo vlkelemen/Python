@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+
+{% block title %}List category{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-4">
+            <a class="btn btn-primary"  href="{{ url_for('todo.list_task') }}">Tasks</a>
+            <a class="btn btn-primary active" href="{{ url_for('todo.list_category') }}">Categories</a>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4">
+            <a style="float: right" class="btn btn-success" href="{{ url_for('todo.create_category') }}">Create</a>
+        </div>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cat in cat_list %}
+            <tr>
+              <td>{{ cat.id }}</td>
+              <td><a href="{{ url_for('todo.detail_category', cat_id=cat.id) }}">{{ cat.name }}</a></td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}
