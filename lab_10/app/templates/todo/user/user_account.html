@@ -1,0 +1,37 @@
+{% extends 'main.html' %}
+
+{% block title %}{{ user_info.username }} profile{% endblock %}
+{% block content %}
+<h1>{{ user_info.username }} profile</h1>
+<p>Email: {{ user_info.email }}</p>
+
+<h2>Tasks</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Deadline</th>
+          <th scope="col">Priority</th>
+          <th scope="col">Progress</th>
+          <th scope="col">Owner</th>
+          <th scope="col">Assigned</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in task_list %}
+            <tr>
+              <td><a href="{{ url_for('todo.detail_task', task_id=task.id) }}">{{ task.title }}</a></td>
+              <td>{{ task.deadline }}</td>
+              <td>{{ task.priority }}</td>
+              <td>{{ task.progress }}</td>
+              <td><a href="{{ url_for('todo.user_profile', user_id=task.owner_id) }}">{{ task.owner_id }}</a></td>
+              <td>
+                  {% for user in task.users %}
+                      <p><a href="{{ url_for('todo.user_profile', user_id=user.id) }}">{{ user.username }}</a></p>
+                  {% endfor %}
+              </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}
