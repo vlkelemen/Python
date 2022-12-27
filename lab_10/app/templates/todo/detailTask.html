@@ -1,0 +1,95 @@
+{% extends 'main.html' %}
+
+{% block title %}Create task{% endblock %}
+{% block content %}
+    <h1>Task detail</h1>
+    <table class="table table-striped">
+      <tbody>
+        {% for label, text_data in task_detail.items() %}
+            <tr>
+              <td>{{ label }}</td>
+                {% if label == "Priority" or label == "Progress" %}
+                    <td>{{ text_data.name }}</td>
+                {% else %}
+                    <td>{{ text_data|safe }}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        <tr>
+            <td>Assigned</td>
+            <td>
+                {% for user in assigned %}
+                        <div class="row">
+                            <div class="col-2">
+                                <a href="{{ url_for('todo.user_profile', user_id=user.id) }}">{{ user.username }}</a>
+                            </div>
+                            <div class="col-1">
+                                <form action="{{ url_for('todo.discard_user_task', task_id=task_id) }}" method="post">
+                                    <input type="text" style="display:none" name="user_id" value="{{ user.id }}">
+                                    <button type="submit" class="btn" style="padding: 0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="red" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        <div class="col-9"></div>
+                        </div>
+                {% endfor %}
+                <form class="row g-3" action="{{ url_for('todo.assign_user_task', task_id=task_id) }}" method="post">
+                    <div class="col-auto">
+                        <input type="text" name="email" class="form-control" placeholder="Email">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-outline-info">Add</button>
+                    </div>
+                </form>
+
+            </td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="display: none" id="edit">
+        {% from "_render_field.html" import render_field %}
+        <form method="post" action="{{ url_for('todo.update_task', task_id=task_id) }}">
+          {{ form.csrf_token }}
+          {{ render_field(form.title, class="form-control", value=task_detail['Title']) }}
+          {{ render_field(form.description, class="form-control", value=task_detail['Description']) }}
+          {{ render_field(form.deadline, class="form-control", value=task_detail['Deadline']) }}
+          {{ render_field(form.priority, class="form-control", value=task_detail['Priority']) }}
+          {{ render_field(form.progress, class="form-control") }}
+          {{ render_field(form.category, class="form-control") }}
+          {{ form.submit(class="btn btn-primary") }}
+        </form>
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='description') }}
+    </div>
+    <center>
+        <button type="button" onclick="editTask()" class="btn btn-info btn-lg">Edit</button>
+        <form action="{{ url_for('todo.delete_task', task_id=task_id) }}" method="post">
+            <button type="submit" class="btn btn-danger btn-lg">Delete</button>
+        </form>
+    </center>
+    <hr>
+    <form method="post" action="{{ url_for('todo.add_comment', task_id=task_id) }}">
+          {{ data['form_comment'].csrf_token }}
+          {{ render_field(data['form_comment'].text, class="form-control") }}
+          {{ form.submit(class="btn btn-primary") }}
+    </form>
+    <h2>Comments</h2>
+        {% for comment in data['comments'] %}
+            <tr>
+              <td>UserID: {{ comment.owner_id }}</td>
+              <td>{{ comment.text|safe }}</td>
+            </tr>
+        {% endfor %}
+    <script>
+        function editTask(){
+            if (document.getElementById('edit').style.display === "none"){
+                document.getElementById('edit').style.display = 'block';
+            }else{
+                document.getElementById('edit').style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}
