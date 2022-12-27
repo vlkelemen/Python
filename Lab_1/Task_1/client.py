@@ -1,19 +1,13 @@
 import socket
 
-host = 'localhost'
-port = 16789
+HOST = '127.0.0.1'
+PORT = 5000
 
-client = socket.socket()
-client.connect((host, port))
-
-message = input(" -> ")
-
-while message.lower().strip() != 'quit':
-    client.send(message.encode())
-    data = client.recv(1024).decode()
-
-    print('Received from server: ' + data)
-
-    message = input(" -> ")
-
-client.close()
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+    print("Connected")
+    while True:
+        message = input("Write your message: ")
+        s.send(message.encode("utf-8"))
+        data = s.recv(1024).decode("utf-8")
+        print('Echoing: ', data)
