@@ -1,34 +1,40 @@
-import threading
+import sys
 import socket
-
-nickname = input('\nChoose a nickname >>> ')
-
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('localhost', 16789))
+import threading
 
 
-def client_receive():
-    while True:
-        try:
-            message = client.recv(1024).decode('utf-8')
-            if message == "nickname?":
-                client.send(nickname.encode('utf-8'))
-            else:
-                print(message)
-        except:
-            print('Error!')
-            client.close()
-            break
+class Client:
+    def __init__(self, client_name):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_address = ('localhost', 8080)
+        self.socket.connect(self.server_address)
+
+        self.client_name = client_name
+        send = threading.Thread(target=self.client_send)
+        send.start()
+        receive = threading.Thread(target=self.client_receive)
+        receive.start()
+
+    def client_send(self):
+        self.socket.send(bytes(self.client_name, encoding='utf-8'))
+        while True:
+            try:
+                c = input()
+                sys.stdout.write("\x1b[1A\x1b[2K")
+                self.socket.send(bytes(c, encoding='utf-8'))
+            except:
+                self.socket.close()
+                return
+
+    def client_receive(self):
+        while True:
+            try:
+                print(self.socket.recv(1024).decode("utf-8"))
+            except:
+                self.socket.close()
+                return
 
 
-def client_send():
-    while True:
-        message = f'{nickname}: {input("")}'
-        client.send(message.encode('utf-8'))
-
-
-receive_thread = threading.Thread(target=client_receive)
-receive_thread.start()
-
-send_thread = threading.Thread(target=client_send)
-send_thread.start()
+if __name__ == "__main__":
+    client_name = input("Write your nickname: ")
+    Client(client_name)
