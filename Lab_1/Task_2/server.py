@@ -1,51 +1,50 @@
-import threading
 import socket
-
-host = 'localhost'
-port = 16789
-
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((host, port))
-server.listen()
-
-clients_list = []
-nicknames_list = []
+import _thread
+from datetime import datetime
 
 
-def broadcast(message):
-    for client in clients_list:
-        client.send(message)
+class Server:
 
+    def __init__(self):
+        self.users_table = {}
 
-def handle_client(client):
-    while True:
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_address = ('localhost', 8080)
+        self.socket.bind(self.server_address)
+        self.socket.listen(10)
+        print('Starting up on {} port {}'.format(*self.server_address))
+        self.wait_for_new_connections()
+
+    def wait_for_new_connections(self):
+        while True:
+            connection, _ = self.socket.accept()
+            _thread.start_new_thread(self.on_new_client, (connection,))
+
+    def on_new_client(self, connection):
         try:
-            message = client.recv(1024)
-            broadcast(message)
+            client_name = connection.recv(64).decode('utf-8')
+            self.users_table[connection] = client_name
+            print(f'{self.get_current_time()} {client_name} joined the room !!')
+
+            while True:
+                data = connection.recv(64).decode('utf-8')
+                if data != '':
+                    self.multicast(data, owner=connection)
+                else:
+                    return
         except:
-            index = clients_list.index(client)
-            clients_list.remove(client)
-            client.close()
-            nickname = nicknames_list[index]
-            broadcast(f'{nickname} has left the chat room!'.encode('utf-8'))
-            nicknames_list.remove(nickname)
-            break
+            print(f'{self.get_current_time()} {client_name} left the room !!')
+            self.users_table.pop(connection)
+            connection.close()
 
+    def get_current_time(self):
+        return datetime.now().strftime("%H:%M:%S")
 
-def receive():
-    while True:
-        print('Server is running and listening ...')
-        client, address = server.accept()
-        client.send('nickname?'.encode('utf-8'))
-        nickname = client.recv(1024)
-        nicknames_list.append(nickname)
-        clients_list.append(client)
-        print(f'User {nickname} joined the server with {str(address)} ip/port'.encode('utf-8'))
-        broadcast(f'{nickname} has connected to the chat room\n'.encode('utf-8'))
-        client.send("You are now connected to the chat! (only you can see this message)".encode('utf-8'))
-        thread = threading.Thread(target=handle_client, args=(client,))
-        thread.start()
+    def multicast(self, message, owner=None):
+        for conn in self.users_table:
+            data = f'{self.get_current_time()} {self.users_table[owner]}: {message}'
+            conn.sendall(bytes(data, encoding='utf-8'))
 
 
 if __name__ == "__main__":
-    receive()
+    Server()
