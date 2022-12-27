@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+
+{% block title %}Create task{% endblock %}
+{% block content %}
+    {% from "_render_field.html" import render_field %}
+        <form method="post">
+          {{ form.csrf_token }}
+          {{ render_field(form.title, class="form-control") }}
+          {{ render_field(form.description, class="form-control") }}
+          {{ render_field(form.deadline, class="form-control") }}
+          {{ render_field(form.priority, class="form-control") }}
+          {{ render_field(form.progress, class="form-control") }}
+          {{ render_field(form.category, class="form-control") }}
+          {{ form.submit(class="btn btn-primary") }}
+        </form>
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='description') }}
+{% endblock %}
