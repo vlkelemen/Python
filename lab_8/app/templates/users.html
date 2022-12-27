@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+
+{% block title %}Contact info list{% endblock %}
+{% block content %}
+    <ul class="list-group">
+    <li class="list-group-item">Username, Email, Password</li>
+
+        {% for i in all_users %}
+            <li class="list-group-item">{{ i.username }}, {{ i.email }}, {{ i.password }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
