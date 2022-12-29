@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+
+{% block title %}About{% endblock %}
+{% block content %}
+    <h2>Hello</h2>
+    <p>
+    My name is Nazar. I'm from Ivano-Frankivsk <br>
+    I'm studying on Software Engineering spaciality.
+    </p>
+    <h6>Here's my hobby list:</h6>
+    <ol class="list-group list-group-numbered">
+        {% for hobbyname in hobies %}
+            <li class="list-group-item">{{ hobbyname }}</li>
+        {% endfor %}
+      </ol>
+{% endblock %}
