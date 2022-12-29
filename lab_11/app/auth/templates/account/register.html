@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% block title %}Register{% endblock %}
+{% block content %}
+{% from "_render_field.html" import render_field %}
+    <form method="post">
+      {{ form.csrf_token }}
+      {{ render_field(form.username, class="form-control") }}
+      {{ render_field(form.email, class="form-control") }}
+      {{ render_field(form.password, class="form-control") }}
+      {{ render_field(form.confirm_password, class="form-control") }}
+      {{ form.submit(class="btn btn-primary") }}
+    </form>
+{% endblock %}
