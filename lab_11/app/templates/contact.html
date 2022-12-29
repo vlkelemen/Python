@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+
+{% block title %}Contact{% endblock %}
+{% block content %}
+    <h2>Hello</h2>
+    <p>
+    Here's my <a href="https://github.com/NazikM/">Github link</a> <br>
+    I'm very shy and can't give you more socials.
+    But next social link depands on current time. Let me explain. If current minute is even number you will see my Facebook profile, if odd you will see Instagram page.
+    </p>
+    <h6>Here's my hobby list:</h6>
+    {% if (minute|int)%2==0 %}
+        <a href="https://www.facebook.com/profile.php?id=100011501381809">Click me</a>
+    {% else %}
+        <a href="https://www.instagram.com/nazar_mrsn/">Click me</a>
+    {% endif %}
+    <h5>Form</h5>
+{% for cat, msg in get_flashed_messages(True) %}
+<ul class="list-group">
+    <li class="list-group-item list-group-item-{{cat}}">{{msg}}</li>
+</ul>
+{%endfor %}
+{% from "_render_field.html" import render_field %}
+    <form method="post">
+      {{ form.csrf_token }}
+      {% if session['name'] %}
+        <dt><label for="name">Name</label></dt>
+        <dd><input class="form-control" id="name" maxlength="10" minlength="4" name="name" required="" type="text" value="{{session['name']}}"> </dd>
+        <br>
+        <dt><label for="email">Email</label></dt>
+        <dd><input class="form-control" id="email" name="email" required="" type="text" value="{{session['email']}}"> </dd>
+      {% else %}
+        {{ render_field(form.name, class="form-control") }}
+        {{ render_field(form.email, class="form-control") }}
+      {% endif %}
+      {{ render_field(form.phone, class="form-control") }}
+      {{ render_field(form.subject, class="form-control") }}
+      {{ render_field(form.message, class="form-control") }}
+      {{ form.submit(class="btn btn-primary") }}
+    </form>
+{% endblock %}
