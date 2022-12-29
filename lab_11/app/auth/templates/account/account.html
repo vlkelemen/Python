@@ -1,0 +1,33 @@
+{% extends 'main.html' %}
+
+{% block title %}Account{% endblock %}
+{% block content %}
+<div class="content-section">
+    <div class="media">
+        <img src="{{ image_file }}" alt="" class="img-fluid rounded-circle account-img" style="width:150px; height: 150px;">
+        <div class="media-body">
+            <h2 class="account-heading">{{ current_user.username }}</h2>
+            <p class="text-secondary">{{ current_user.email }}</p>
+            <p class="text-secondary">{{ current_user.about_me }}</p>
+            <p class="text-secondary">{{ current_user.last_seen }}</p>
+        </div>
+    </div>
+    {% from "_render_field.html" import render_field %}
+        <form method="post" action="{{ url_for('auth.account') }}" enctype="multipart/form-data">
+          {{ form.csrf_token }}
+          {{ render_field(form.image, class="form-control-file") }}
+          {{ render_field(form.username, class="form-control", value=current_user.username) }}
+          {{ render_field(form.email, class="form-control", value=current_user.email) }}
+          {{ render_field(form.about_me, class="form-control", value=current_user.about_me) }}
+          {{ form.submit(class="btn btn-primary") }}
+        </form>
+        <h4>Change password</h4>
+        <form method="post" action="{{ url_for('auth.change_pwd') }}" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            {{ render_field(pass_form.old_password, class="form-control") }}
+            {{ render_field(pass_form.new_password, class="form-control") }}
+            {{ render_field(pass_form.confirm_password, class="form-control") }}
+            {{ pass_form.submit(class="btn btn-primary") }}
+          </form>
+</div>
+{% endblock %}
