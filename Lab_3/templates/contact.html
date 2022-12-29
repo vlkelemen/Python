@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% block title %}Contact{% endblock %}
+{% block content %}
+    <h2>Hello</h2>
+    <p>
+    Here's my <a href="https://github.com/vlkelemen/">Github link</a> <br>
+    <h6>Here's my hobby list:</h6>
+    {% if (minute|int)%2==0 %}
+        <a href="https://www.facebook.com">Click me</a>
+    {% else %}
+        <a href="https://www.instagram.com/vl_kelemen/">Click me</a>
+    {% endif %}
+{% endblock %}
